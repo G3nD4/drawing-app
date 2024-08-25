@@ -18,29 +18,13 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ColorToolbar(),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: StrokeToolbar(),
-                ),
-              ],
-            ),
-          ),
           GestureDetector(
             onPanStart: wm.onPanStart,
             onPanUpdate: wm.onPanUpdate,
             onPanEnd: wm.onPanEnd,
             child: RepaintBoundary(
               child: SizedBox(
-                width: wm.query.size.width,
+                width: wm.query.size.width, 
                 height: wm.query.size.height,
                 child: ValueListenableBuilder<Offset>(
                   valueListenable: wm.drawingListenable,
@@ -54,6 +38,24 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
                   },
                 ),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ColorToolbar(
+                    onColorChanged: wm.onColorChanged,
+                  ),
+                ),
+                const Align(
+                  alignment: Alignment.bottomRight,
+                  child: StrokeToolbar(),
+                ),
+              ],
             ),
           ),
         ],
