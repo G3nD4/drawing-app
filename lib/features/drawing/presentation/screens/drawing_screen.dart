@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen_wm.dart';
-import 'package:drawing_application/features/drawing/presentation/widgets/color_toolbar.dart';
-import 'package:drawing_application/features/drawing/presentation/widgets/stroke_toolbar.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
+import 'drawing_screen_wm.dart';
 import '../widgets/painter.dart';
+import '../widgets/stroke_toolbar.dart';
+import '../widgets/color_toolbar.dart';
+
 
 @RoutePage()
 class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
@@ -24,7 +24,7 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
             onPanEnd: wm.onPanEnd,
             child: RepaintBoundary(
               child: SizedBox(
-                width: wm.query.size.width, 
+                width: wm.query.size.width,
                 height: wm.query.size.height,
                 child: ValueListenableBuilder<Offset>(
                   valueListenable: wm.drawingListenable,
@@ -51,9 +51,11 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
                     onColorChanged: wm.onColorChanged,
                   ),
                 ),
-                const Align(
+                Align(
                   alignment: Alignment.bottomRight,
-                  child: StrokeToolbar(),
+                  child: StrokeToolbar(
+                    onStrokeWidthChanged: wm.onStrokeWidthChanged,
+                  ),
                 ),
               ],
             ),

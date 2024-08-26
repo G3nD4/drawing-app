@@ -48,34 +48,43 @@ class _ColorToolbarState extends State<ColorToolbar> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: _colors
-            .map((final Color color) => Bounceable(
-                  onTap: widget.onColorChanged == null
-                      ? null
-                      : () => widget.onColorChanged!(color),
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8.0),
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: color,
-                    ),
-                    child: Center(
-                      child: Container(
-                        height: 12,
-                        width: 12,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: color == Colors.white
-                              ? Colors.black
-                              : Colors.white,
-                        ),
-                      ),
-                    ),
+        children: List<Widget>.generate(
+          _colors.length,
+          (int index) => Bounceable(
+            onTap: widget.onColorChanged == null
+                ? null
+                : () {
+                    setState(() {
+                      _choosenIndex = index;
+                      widget.onColorChanged!(_colors[index]);
+                    });
+                  },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 8.0),
+              height: 32,
+              width: 32,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _colors[index],
+              ),
+              child: Center(
+                child: Container(
+                  height: 12,
+                  width: 12,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: index != _choosenIndex
+                        ? Colors.transparent
+                        : _colors[index] == Colors.white
+                            ? Colors.black
+                            : Colors.white,
                   ),
-                ))
-            .toList(),
+                ),
+              ),
+            ),
+          ),
+          growable: false,
+        ),
       ),
     );
   }

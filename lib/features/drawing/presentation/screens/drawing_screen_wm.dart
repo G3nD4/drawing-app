@@ -10,6 +10,8 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/enums/stroke_width_enum.dart';
+
 DrawingScreenWM kDrawingScreenWMFactory(BuildContext context) =>
     DrawingScreenWM();
 
@@ -30,7 +32,7 @@ abstract interface class IDrawingScreenWM implements IWidgetModel {
 
   void onColorChanged(Color color);
 
-  void onStrokeWidthChanged(double width);
+  void onStrokeWidthChanged(StrokeWidthEnum width);
 }
 
 class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
@@ -134,7 +136,7 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   }
 
   @override
-  void onStrokeWidthChanged(double width) {
-    _currentStrokeWidth = width;
+  void onStrokeWidthChanged(StrokeWidthEnum strokeWidth) {
+    _currentStrokeWidth = strokeWidth.width;
   }
 }
