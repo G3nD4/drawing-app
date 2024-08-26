@@ -10,6 +10,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../common/widgets/confirm_dialog.dart';
 import '../../domain/entities/enums/stroke_width_enum.dart';
 
 DrawingScreenWM kDrawingScreenWMFactory(BuildContext context) =>
@@ -33,6 +34,8 @@ abstract interface class IDrawingScreenWM implements IWidgetModel {
   void onColorChanged(Color color);
 
   void onStrokeWidthChanged(StrokeWidthEnum width);
+
+  void clearDrawing();
 }
 
 class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
@@ -138,5 +141,24 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   @override
   void onStrokeWidthChanged(StrokeWidthEnum strokeWidth) {
     _currentStrokeWidth = strokeWidth.width;
+  }
+
+  @override
+  void clearDrawing() async {
+    alertConfirmationDialog(
+      context,
+      title: 'Clear drawing?',
+      confirmationText: 'Are you sure you want to clear your drawing?',
+      confirm: 'Yes',
+      deny: 'No',
+    ).then(
+      (value) {
+        if (value) {
+          _totalCurves.clear();
+          _currentCurve = null;
+          _drawingListenable.emit(Offset.zero);
+        }
+      },
+    );
   }
 }
