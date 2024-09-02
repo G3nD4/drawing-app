@@ -1,46 +1,28 @@
 import 'dart:developer';
-import 'dart:ui';
+import 'dart:io';
+import 'dart:ui' as ui;
 
+import 'package:drawing_application/domain/entities/shareable_file_entity/image_file.dart';
+import 'package:drawing_application/domain/enums/shareable_file_type.dart';
+import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart';
+
+import '../../../../common/widgets/confirm_dialog.dart';
 import 'package:drawing_application/extensions/offset_x.dart';
 import 'package:drawing_application/extensions/value_notifier_x.dart';
 import 'package:drawing_application/features/drawing/domain/entities/curve_entity.dart';
 import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen.dart';
 import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen_model.dart';
-import 'package:elementary/elementary.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
-import '../../../../common/widgets/confirm_dialog.dart';
 import '../../domain/entities/enums/stroke_width_enum.dart';
-
-DrawingScreenWM kDrawingScreenWMFactory(BuildContext context) =>
-    DrawingScreenWM();
-
-abstract interface class IDrawingScreenWM implements IWidgetModel {
-  ValueListenable<Offset> get drawingListenable;
-
-  MediaQueryData get query;
-
-  void onPanStart(DragStartDetails details);
-
-  void onPanUpdate(DragUpdateDetails details);
-
-  void onPanEnd(DragEndDetails details);
-
-  void paint(Canvas canvas, Size size);
-
-  bool shouldRepaint(CustomPainter oldDelegate);
-
-  void onColorChanged(Color color);
-
-  void onStrokeWidthChanged(StrokeWidthEnum width);
-
-  void clearDrawing();
-}
+import 'i_drawing_screen_wm.dart';
 
 class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     implements IDrawingScreenWM {
-  DrawingScreenWM() : super(DrawingScreenModel());
+  DrawingScreenWM(super._model);
 
   // Updates UI on each new point drawn
   late final ValueNotifier<Offset> _drawingListenable;
@@ -51,7 +33,11 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
 
   // Paint related
   late double _currentStrokeWidth;
-  late Color _currentColor;
+  late ui.Color _currentColor;
+
+  // Image generation related
+  ui.PictureRecorder? recorder;
+  ui.Canvas? imageCanvas;
 
   @override
   void initWidgetModel() {
@@ -63,6 +49,8 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
 
     _currentStrokeWidth = 4.0;
     _currentColor = Colors.black;
+
+    _intiPictureRecorder();
   }
 
   @override
@@ -116,12 +104,19 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
         ..strokeJoin = StrokeJoin.round;
 
       if (curve.points.length == 1) {
-        canvas.drawPoints(PointMode.points, curve.points, paint);
+        canvas.drawPoints(ui.PointMode.points, curve.points, paint);
+        imageCanvas!.drawPoints(ui.PointMode.points, curve.points, paint);
+
         return;
       }
 
       for (int i = 0; i < curve.points.length - 1; i++) {
         canvas.drawLine(
+          Offset(curve.points[i].dx, curve.points[i].dy),
+          Offset(curve.points[i + 1].dx, curve.points[i + 1].dy),
+          paint,
+        );
+        imageCanvas!.drawLine(
           Offset(curve.points[i].dx, curve.points[i].dy),
           Offset(curve.points[i + 1].dx, curve.points[i + 1].dy),
           paint,
@@ -134,7 +129,7 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   @override
-  void onColorChanged(Color color) {
+  void onColorChanged(ui.Color color) {
     _currentColor = color;
   }
 
@@ -160,5 +155,69 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
         }
       },
     );
+  }
+
+  @override
+  void share() async {
+    _convertDrawingIntoPng().then((File? value) {
+      if (value != null) {
+        model.share(ImageFile(
+          data: FileImage(value),
+          shareableFileType: ShareableFileType.image,
+        ));
+      }
+      _intiPictureRecorder();
+    });
+  }
+
+  void _intiPictureRecorder() {
+    recorder = ui.PictureRecorder();
+    imageCanvas = ui.Canvas(
+        recorder!,
+        Rect.fromPoints(
+            Offset.zero,
+            Offset(
+              MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height,
+            )))
+      ..drawRect(
+          Rect.fromPoints(
+              Offset.zero,
+              Offset(
+                MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height,
+              )),
+          Paint()..color = Colors.white);
+  }
+
+  Future<File?> _convertDrawingIntoPng() async {
+    try {
+      final picture = recorder!.endRecording();
+      final ui.Image image = await picture.toImage(
+        MediaQuery.of(context).size.width.toInt(),
+        MediaQuery.of(context).size.height.toInt(),
+      );
+      final Directory dir = await getTemporaryDirectory();
+      final String path = '${dir.path}/flutter_image.png';
+      final File file = File(path);
+      final ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) {
+        log('byteData is null');
+        return null;
+      }
+      await file.writeAsBytes(byteData.buffer.asInt8List());
+
+      final jpgImageDecoded = decodeImage(file.readAsBytesSync())!;
+      final jpgImageFile = File('${dir.path}/flutter_image.jpg')
+        ..writeAsBytesSync(
+          encodeJpg(jpgImageDecoded),
+        );
+
+      return jpgImageFile;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
   }
 }

@@ -1,0 +1,4 @@
+enum ShareableFileType {
+  image,
+  pdf;
+}

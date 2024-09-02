@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/clear_drawing_button.dart';
-import 'drawing_screen_wm.dart';
+import 'i_drawing_screen_wm.dart';
 import '../widgets/painter.dart';
 import '../widgets/stroke_toolbar.dart';
 import '../widgets/color_toolbar.dart';
@@ -23,21 +24,21 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
               onPanStart: wm.onPanStart,
               onPanUpdate: wm.onPanUpdate,
               onPanEnd: wm.onPanEnd,
-              child: RepaintBoundary(
-                child: SizedBox(
-                  width: wm.query.size.width,
-                  height: wm.query.size.height,
-                  child: ValueListenableBuilder<Offset>(
-                    valueListenable: wm.drawingListenable,
-                    builder: (_, final Offset newOffset, __) {
-                      return CustomPaint(
+              child: SizedBox(
+                width: wm.query.size.width,
+                height: wm.query.size.height,
+                child: ValueListenableBuilder<Offset>(
+                  valueListenable: wm.drawingListenable,
+                  builder: (_, final Offset newOffset, __) {
+                    return RepaintBoundary(
+                      child: CustomPaint(
                         painter: Painter(
                           onPaint: wm.paint,
                           onShouldRepaint: wm.shouldRepaint,
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -64,6 +65,10 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: wm.share,
+        child: const Icon(CupertinoIcons.share_up),
       ),
     );
   }
