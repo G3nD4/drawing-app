@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureDependencies();
+  beforeRun();
   runApp(DrawingApp());
+}
+
+void beforeRun() {
+  configureDependencies();
+  setupLogger();
 }

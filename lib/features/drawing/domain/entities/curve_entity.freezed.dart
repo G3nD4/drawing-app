@@ -20,7 +20,9 @@ mixin _$CurveEntity {
   Color get color => throw _privateConstructorUsedError;
   double get strokeWidth => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CurveEntityCopyWith<CurveEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$CurveEntityCopyWithImpl<$Res, $Val extends CurveEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,6 +91,8 @@ class __$$CurveEntityImplCopyWithImpl<$Res>
       _$CurveEntityImpl _value, $Res Function(_$CurveEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -154,7 +160,9 @@ class _$CurveEntityImpl extends _CurveEntity {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_points), color, strokeWidth);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CurveEntityImplCopyWith<_$CurveEntityImpl> get copyWith =>
@@ -172,8 +180,11 @@ abstract class _CurveEntity extends CurveEntity {
   Color get color;
   @override
   double get strokeWidth;
+
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CurveEntityImplCopyWith<_$CurveEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

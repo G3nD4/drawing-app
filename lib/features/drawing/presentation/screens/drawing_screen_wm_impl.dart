@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:drawing_application/domain/entities/shareable_file_entity/image_file.dart';
 import 'package:drawing_application/domain/enums/shareable_file_type.dart';
+import 'package:drawing_application/features/logger/logable_mixin.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +17,12 @@ import 'package:drawing_application/features/drawing/domain/entities/curve_entit
 import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen.dart';
 import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen_model.dart';
 
+import '../../../get_it/get_it.dart';
 import '../../domain/entities/enums/stroke_width_enum.dart';
 import 'i_drawing_screen_wm.dart';
 
 class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
+    with Logable
     implements IDrawingScreenWM {
   DrawingScreenWM(super._model);
 
@@ -77,7 +79,6 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
       points: _currentCurve!.points + [point],
     );
     _drawingListenable.emit(point);
-    log(point.coordinateString);
   }
 
   @override

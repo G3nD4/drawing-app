@@ -7,7 +7,7 @@ import '../entities/shareable_file_entity/shareable_file_entity.dart';
 
 @Injectable(as: UseCase)
 class ShareUseCase implements UseCase {
-  const ShareUseCase(this._file);
+  const ShareUseCase(@factoryParam this._file);
 
   final ShareableFileEntity _file;
 

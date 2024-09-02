@@ -30,8 +30,12 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.lazySingleton<_i1037.ShareRepository>(() => _i671.ShareRepositoryImpl());
-    gh.factory<_i776.UseCase>(
-        () => _i725.ShareUseCase(gh<_i807.ShareableFileEntity<dynamic>>()));
+    gh.factoryParam<_i776.UseCase, _i807.ShareableFileEntity<dynamic>, dynamic>(
+        (
+      _file,
+      _,
+    ) =>
+            _i725.ShareUseCase(_file));
     return this;
   }
 }
