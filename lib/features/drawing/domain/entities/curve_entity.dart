@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'curve_entity.freezed.dart';
 
-@freezed
+@Freezed(makeCollectionsUnmodifiable: false)
 @immutable
 class CurveEntity with _$CurveEntity {
   const CurveEntity._();

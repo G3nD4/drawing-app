@@ -96,7 +96,7 @@ class __$$CurveEntityImplCopyWithImpl<$Res>
   }) {
     return _then(_$CurveEntityImpl(
       null == points
-          ? _value._points
+          ? _value.points
           : points // ignore: cast_nullable_to_non_nullable
               as List<Offset>,
       null == color
@@ -114,19 +114,12 @@ class __$$CurveEntityImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CurveEntityImpl extends _CurveEntity {
-  const _$CurveEntityImpl(final List<Offset> points,
+  const _$CurveEntityImpl(this.points,
       [this.color = Colors.black, this.strokeWidth = 4.0])
-      : _points = points,
-        super._();
+      : super._();
 
-  final List<Offset> _points;
   @override
-  List<Offset> get points {
-    if (_points is EqualUnmodifiableListView) return _points;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_points);
-  }
-
+  final List<Offset> points;
   @override
   @JsonKey()
   final Color color;
@@ -144,7 +137,7 @@ class _$CurveEntityImpl extends _CurveEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CurveEntityImpl &&
-            const DeepCollectionEquality().equals(other._points, _points) &&
+            const DeepCollectionEquality().equals(other.points, points) &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.strokeWidth, strokeWidth) ||
                 other.strokeWidth == strokeWidth));
@@ -152,7 +145,7 @@ class _$CurveEntityImpl extends _CurveEntity {
 
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_points), color, strokeWidth);
+      const DeepCollectionEquality().hash(points), color, strokeWidth);
 
   @JsonKey(ignore: true)
   @override

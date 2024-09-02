@@ -64,8 +64,11 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     log('User started drawing');
     final box = context.findRenderObject() as RenderBox;
     final point = box.globalToLocal(details.globalPosition);
-    log(point.coordinateString);
-    _currentCurve = CurveEntity([point], _currentColor, _currentStrokeWidth);
+    _currentCurve = CurveEntity(
+      [point],
+      _currentColor,
+      _currentStrokeWidth,
+    );
     _drawingListenable.emit(point);
   }
 
@@ -73,9 +76,7 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   void onPanUpdate(DragUpdateDetails details) {
     final box = context.findRenderObject() as RenderBox;
     final point = box.globalToLocal(details.globalPosition);
-    _currentCurve = _currentCurve!.copyWith(
-      points: _currentCurve!.points + [point],
-    );
+    _currentCurve!.points.add(point);
     _drawingListenable.emit(point);
     log(point.coordinateString);
   }
