@@ -2,22 +2,21 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:drawing_application/domain/entities/shareable_file_entity/image_file.dart';
-import 'package:drawing_application/domain/enums/shareable_file_type.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../common/widgets/confirm_dialog.dart';
-import 'package:drawing_application/extensions/offset_x.dart';
-import 'package:drawing_application/extensions/value_notifier_x.dart';
-import 'package:drawing_application/features/drawing/domain/entities/curve_entity.dart';
-import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen.dart';
-import 'package:drawing_application/features/drawing/presentation/screens/drawing_screen_model.dart';
-
+import '../../../../domain/entities/shareable_file_entity/image_file.dart';
+import '../../../../domain/enums/shareable_file_type.dart';
+import '../../../../extensions/offset_x.dart';
+import '../../../../extensions/value_notifier_x.dart';
+import '../../domain/entities/curve_entity.dart';
 import '../../domain/entities/enums/stroke_width_enum.dart';
+import 'drawing_screen.dart';
+import 'drawing_screen_model.dart';
 import 'i_drawing_screen_wm.dart';
 
 class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
@@ -42,10 +41,10 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _drawingListenable = ValueNotifier(Offset.zero);
+    _drawingListenable = ValueNotifier<Offset>(Offset.zero);
 
     _totalCurves = List<CurveEntity>.empty(growable: true);
-    _currentCurve = const CurveEntity([]);
+    _currentCurve = const CurveEntity(<Offset>[]);
 
     _currentStrokeWidth = 4.0;
     _currentColor = Colors.black;
@@ -62,10 +61,10 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   @override
   void onPanStart(DragStartDetails details) {
     log('User started drawing');
-    final box = context.findRenderObject() as RenderBox;
-    final point = box.globalToLocal(details.globalPosition);
+    final RenderBox box = (context.findRenderObject() as RenderBox?)!;
+    final Offset point = box.globalToLocal(details.globalPosition);
     _currentCurve = CurveEntity(
-      [point],
+      <Offset>[point],
       _currentColor,
       _currentStrokeWidth,
     );
@@ -74,8 +73,8 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
 
   @override
   void onPanUpdate(DragUpdateDetails details) {
-    final box = context.findRenderObject() as RenderBox;
-    final point = box.globalToLocal(details.globalPosition);
+    final RenderBox box = (context.findRenderObject() as RenderBox?)!;
+    final Offset point = box.globalToLocal(details.globalPosition);
     _currentCurve!.points.add(point);
     _drawingListenable.emit(point);
     log(point.coordinateString);
@@ -90,7 +89,7 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
 
   @override
   void paint(Canvas canvas, Size size) {
-    final List<CurveEntity> curvesToDraw = List.from(_totalCurves);
+    final List<CurveEntity> curvesToDraw = List<CurveEntity>.from(_totalCurves);
     if (_currentCurve != null) {
       curvesToDraw.add(_currentCurve!);
     }
@@ -140,15 +139,13 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   }
 
   @override
-  void clearDrawing() async {
+  void clearDrawing() {
     alertConfirmationDialog(
       context,
       title: 'Clear drawing?',
       confirmationText: 'Are you sure you want to clear your drawing?',
-      confirm: 'Yes',
-      deny: 'No',
     ).then(
-      (value) {
+      (bool value) {
         if (value) {
           _totalCurves.clear();
           _currentCurve = null;
@@ -159,8 +156,8 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
   }
 
   @override
-  void share() async {
-    _convertDrawingIntoPng().then((File? value) {
+  void share() {
+    _convertDrawingIntoJpg().then((File? value) {
       if (value != null) {
         model.share(ImageFile(
           data: FileImage(value),
@@ -191,9 +188,9 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
           Paint()..color = Colors.white);
   }
 
-  Future<File?> _convertDrawingIntoPng() async {
+  Future<File?> _convertDrawingIntoJpg() async {
     try {
-      final picture = recorder!.endRecording();
+      final ui.Picture picture = recorder!.endRecording();
       final ui.Image image = await picture.toImage(
         MediaQuery.of(context).size.width.toInt(),
         MediaQuery.of(context).size.height.toInt(),
@@ -210,7 +207,7 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
       await file.writeAsBytes(byteData.buffer.asInt8List());
 
       final jpgImageDecoded = decodeImage(file.readAsBytesSync())!;
-      final jpgImageFile = File('${dir.path}/flutter_image.jpg')
+      final File jpgImageFile = File('${dir.path}/flutter_image.jpg')
         ..writeAsBytesSync(
           encodeJpg(jpgImageDecoded),
         );
