@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/clear_drawing_button.dart';
+import '../widgets/save_picture_button.dart';
 import 'i_drawing_screen_wm.dart';
 import '../widgets/painter.dart';
 import '../widgets/stroke_toolbar.dart';
@@ -60,6 +61,8 @@ class DrawingScreen extends ElementaryWidget<IDrawingScreenWM> {
                   ClearDrawingButton(
                     onClearPressed: wm.clearDrawing,
                   ),
+                  const SizedBox(height: 32.0),
+                  SavePictureButton(onTap: wm.savePicture),
                 ],
               ),
             ),

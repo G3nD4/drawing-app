@@ -14,12 +14,18 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+CurveEntity _$CurveEntityFromJson(Map<String, dynamic> json) {
+  return _CurveEntity.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CurveEntity {
+  @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
   List<Offset> get points => throw _privateConstructorUsedError;
   Color get color => throw _privateConstructorUsedError;
   double get strokeWidth => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CurveEntityCopyWith<CurveEntity> get copyWith =>
       throw _privateConstructorUsedError;
@@ -31,7 +37,11 @@ abstract class $CurveEntityCopyWith<$Res> {
           CurveEntity value, $Res Function(CurveEntity) then) =
       _$CurveEntityCopyWithImpl<$Res, CurveEntity>;
   @useResult
-  $Res call({List<Offset> points, Color color, double strokeWidth});
+  $Res call(
+      {@JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+      List<Offset> points,
+      Color color,
+      double strokeWidth});
 }
 
 /// @nodoc
@@ -76,7 +86,11 @@ abstract class _$$CurveEntityImplCopyWith<$Res>
       __$$CurveEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Offset> points, Color color, double strokeWidth});
+  $Res call(
+      {@JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+      List<Offset> points,
+      Color color,
+      double strokeWidth});
 }
 
 /// @nodoc
@@ -112,13 +126,18 @@ class __$$CurveEntityImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
+@JsonSerializable()
+class _$CurveEntityImpl implements _CurveEntity {
+  const _$CurveEntityImpl(
+      @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson) this.points,
+      [this.color = Colors.black,
+      this.strokeWidth = 4.0]);
 
-class _$CurveEntityImpl extends _CurveEntity {
-  const _$CurveEntityImpl(this.points,
-      [this.color = Colors.black, this.strokeWidth = 4.0])
-      : super._();
+  factory _$CurveEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CurveEntityImplFromJson(json);
 
   @override
+  @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
   final List<Offset> points;
   @override
   @JsonKey()
@@ -143,6 +162,7 @@ class _$CurveEntityImpl extends _CurveEntity {
                 other.strokeWidth == strokeWidth));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(points), color, strokeWidth);
@@ -152,14 +172,27 @@ class _$CurveEntityImpl extends _CurveEntity {
   @pragma('vm:prefer-inline')
   _$$CurveEntityImplCopyWith<_$CurveEntityImpl> get copyWith =>
       __$$CurveEntityImplCopyWithImpl<_$CurveEntityImpl>(this, _$identity);
-}
-
-abstract class _CurveEntity extends CurveEntity {
-  const factory _CurveEntity(final List<Offset> points,
-      [final Color color, final double strokeWidth]) = _$CurveEntityImpl;
-  const _CurveEntity._() : super._();
 
   @override
+  Map<String, dynamic> toJson() {
+    return _$$CurveEntityImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _CurveEntity implements CurveEntity {
+  const factory _CurveEntity(
+      @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+      final List<Offset> points,
+      [final Color color,
+      final double strokeWidth]) = _$CurveEntityImpl;
+
+  factory _CurveEntity.fromJson(Map<String, dynamic> json) =
+      _$CurveEntityImpl.fromJson;
+
+  @override
+  @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
   List<Offset> get points;
   @override
   Color get color;

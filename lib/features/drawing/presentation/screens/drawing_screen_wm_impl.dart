@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -9,10 +10,15 @@ import 'package:image/image.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../common/widgets/confirm_dialog.dart';
+import '../../../../common/widgets/info_dialog.dart';
+import '../../../../common/widgets/prompt_string_field_dialog.dart';
+import '../../../../domain/entities/picture_entity/picture_entity.dart';
 import '../../../../domain/entities/shareable_file_entity/image_file.dart';
 import '../../../../domain/enums/shareable_file_type.dart';
+import '../../../../domain/use_case/i_use_case.dart';
 import '../../../../extensions/offset_x.dart';
 import '../../../../extensions/value_notifier_x.dart';
+import '../../data/cubit/picture_cubit/picture_cubit.dart';
 import '../../domain/entities/curve_entity.dart';
 import '../../domain/entities/enums/stroke_width_enum.dart';
 import 'drawing_screen.dart';
@@ -22,21 +28,6 @@ import 'i_drawing_screen_wm.dart';
 class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     implements IDrawingScreenWM {
   DrawingScreenWM(super._model);
-
-  // Updates UI on each new point drawn
-  late final ValueNotifier<Offset> _drawingListenable;
-
-  // Drawing related
-  late final List<CurveEntity> _totalCurves;
-  late CurveEntity? _currentCurve;
-
-  // Paint related
-  late double _currentStrokeWidth;
-  late ui.Color _currentColor;
-
-  // Image generation related
-  ui.PictureRecorder? recorder;
-  ui.Canvas? imageCanvas;
 
   @override
   void initWidgetModel() {
@@ -50,6 +41,21 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     _currentColor = Colors.black;
 
     _intiPictureRecorder();
+
+    _pictureStateSubscription = model.pictureStateStream.listen(
+      (final PictureState state) => state.whenOrNull(
+        saveFailure: (final String failure) => alertInfoDialog(
+          context,
+          body: failure,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pictureStateSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -168,6 +174,15 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     });
   }
 
+  @override
+  void savePicture() => alertPromptStringField(
+        context,
+        title: 'Name of picture',
+      ).then((String? name) => model.savePicture(
+            name: name ?? '',
+            curves: _totalCurves,
+          ));
+
   void _intiPictureRecorder() {
     recorder = ui.PictureRecorder();
     imageCanvas = ui.Canvas(
@@ -218,4 +233,21 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     }
     return null;
   }
+
+  // Updates UI on each new point drawn
+  late final ValueNotifier<Offset> _drawingListenable;
+
+  // Drawing related
+  late final List<CurveEntity> _totalCurves;
+  late CurveEntity? _currentCurve;
+
+  // Paint related
+  late double _currentStrokeWidth;
+  late ui.Color _currentColor;
+
+  // Image generation related
+  ui.PictureRecorder? recorder;
+  ui.Canvas? imageCanvas;
+
+  late final StreamSubscription<PictureState> _pictureStateSubscription;
 }
