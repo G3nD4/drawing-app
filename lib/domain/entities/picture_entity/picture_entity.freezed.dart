@@ -28,8 +28,12 @@ mixin _$PictureEntity {
   @Assert('name.isNotEmpty', 'Picture name cannot be empty!')
   String get name => throw _privateConstructorUsedError;
 
+  /// Serializes this PictureEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PictureEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PictureEntityCopyWith<PictureEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -59,6 +63,8 @@ class _$PictureEntityCopyWithImpl<$Res, $Val extends PictureEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PictureEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -108,6 +114,8 @@ class __$$PictureEntityImplCopyWithImpl<$Res>
       _$PictureEntityImpl _value, $Res Function(_$PictureEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PictureEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -180,12 +188,14 @@ class _$PictureEntityImpl implements _PictureEntity {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, const DeepCollectionEquality().hash(_curves), name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PictureEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PictureEntityImplCopyWith<_$PictureEntityImpl> get copyWith =>
@@ -222,8 +232,11 @@ abstract class _PictureEntity implements PictureEntity {
   @override
   @Assert('name.isNotEmpty', 'Picture name cannot be empty!')
   String get name;
+
+  /// Create a copy of PictureEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PictureEntityImplCopyWith<_$PictureEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

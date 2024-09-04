@@ -3,6 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../features/drawing/domain/entities/curve_entity.dart';
 
 part 'picture_entity.freezed.dart';
+part 'picture_entity.g.dart';
+
 
 @Freezed()
 class PictureEntity with _$PictureEntity {

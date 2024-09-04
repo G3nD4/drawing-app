@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../domain/repository/storage_repository.dart';
+import '../../../../../domain/repository/picture_repository.dart';
 import '../../../domain/entities/curve_entity.dart';
 
 part 'picture_cubit.freezed.dart';
@@ -33,8 +35,14 @@ class PictureCubit extends Cubit<PictureState> {
     );
 
     savingResult.fold(
-      (int id) => emit(PictureState.saveSuccess(id)),
-      (String failure) => emit(PictureState.saveFailure(failure)),
+      (int id) {
+        emit(PictureState.saveSuccess(id));
+        log('Saved picture:\n\t$name,\n\tid: $id');
+      },
+      (String failure) {
+        emit(PictureState.saveFailure(failure));
+        log('Failed to save picture:\n\t$name,\n\tid: $id');
+      },
     );
   }
 }

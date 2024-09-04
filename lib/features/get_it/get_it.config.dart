@@ -17,7 +17,7 @@ import '../../data/repository/share_repository_impl.dart' as _i671;
 import '../../domain/entities/shareable_file_entity/shareable_file_entity.dart'
     as _i807;
 import '../../domain/repository/share_repository.dart' as _i1037;
-import '../../domain/repository/storage_repository.dart' as _i668;
+import '../../domain/repository/picture_repository.dart' as _i668;
 import '../../domain/use_case/i_use_case.dart' as _i776;
 import '../../domain/use_case/share_use_case.dart' as _i725;
 import '../drawing/data/cubit/picture_cubit/picture_cubit.dart' as _i583;

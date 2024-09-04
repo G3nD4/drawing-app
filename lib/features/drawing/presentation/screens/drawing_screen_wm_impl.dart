@@ -83,7 +83,6 @@ class DrawingScreenWM extends WidgetModel<DrawingScreen, DrawingScreenModel>
     final Offset point = box.globalToLocal(details.globalPosition);
     _currentCurve!.points.add(point);
     _drawingListenable.emit(point);
-    log(point.coordinateString);
   }
 
   @override

@@ -20,13 +20,19 @@ CurveEntity _$CurveEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CurveEntity {
-  @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+  @JsonKey(
+      fromJson: CurveEntity.pointsFromJson, toJson: CurveEntity.pointsToJson)
   List<Offset> get points => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
   Color get color => throw _privateConstructorUsedError;
   double get strokeWidth => throw _privateConstructorUsedError;
 
+  /// Serializes this CurveEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CurveEntityCopyWith<CurveEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -38,8 +44,12 @@ abstract class $CurveEntityCopyWith<$Res> {
       _$CurveEntityCopyWithImpl<$Res, CurveEntity>;
   @useResult
   $Res call(
-      {@JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+      {@JsonKey(
+          fromJson: CurveEntity.pointsFromJson,
+          toJson: CurveEntity.pointsToJson)
       List<Offset> points,
+      @JsonKey(
+          fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
       Color color,
       double strokeWidth});
 }
@@ -54,6 +64,8 @@ class _$CurveEntityCopyWithImpl<$Res, $Val extends CurveEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,8 +99,12 @@ abstract class _$$CurveEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+      {@JsonKey(
+          fromJson: CurveEntity.pointsFromJson,
+          toJson: CurveEntity.pointsToJson)
       List<Offset> points,
+      @JsonKey(
+          fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
       Color color,
       double strokeWidth});
 }
@@ -101,6 +117,8 @@ class __$$CurveEntityImplCopyWithImpl<$Res>
       _$CurveEntityImpl _value, $Res Function(_$CurveEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,18 +147,24 @@ class __$$CurveEntityImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CurveEntityImpl implements _CurveEntity {
   const _$CurveEntityImpl(
-      @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson) this.points,
-      [this.color = Colors.black,
+      @JsonKey(
+          fromJson: CurveEntity.pointsFromJson,
+          toJson: CurveEntity.pointsToJson)
+      this.points,
+      [@JsonKey(
+          fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
+      this.color = Colors.black,
       this.strokeWidth = 4.0]);
 
   factory _$CurveEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$CurveEntityImplFromJson(json);
 
   @override
-  @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+  @JsonKey(
+      fromJson: CurveEntity.pointsFromJson, toJson: CurveEntity.pointsToJson)
   final List<Offset> points;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
   final Color color;
   @override
   @JsonKey()
@@ -162,12 +186,14 @@ class _$CurveEntityImpl implements _CurveEntity {
                 other.strokeWidth == strokeWidth));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(points), color, strokeWidth);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CurveEntityImplCopyWith<_$CurveEntityImpl> get copyWith =>
@@ -183,23 +209,32 @@ class _$CurveEntityImpl implements _CurveEntity {
 
 abstract class _CurveEntity implements CurveEntity {
   const factory _CurveEntity(
-      @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+      @JsonKey(
+          fromJson: CurveEntity.pointsFromJson,
+          toJson: CurveEntity.pointsToJson)
       final List<Offset> points,
-      [final Color color,
+      [@JsonKey(
+          fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
+      final Color color,
       final double strokeWidth]) = _$CurveEntityImpl;
 
   factory _CurveEntity.fromJson(Map<String, dynamic> json) =
       _$CurveEntityImpl.fromJson;
 
   @override
-  @JsonKey(fromJson: pointsFromJson, toJson: pointsToJson)
+  @JsonKey(
+      fromJson: CurveEntity.pointsFromJson, toJson: CurveEntity.pointsToJson)
   List<Offset> get points;
   @override
+  @JsonKey(fromJson: CurveEntity.colorFromJson, toJson: CurveEntity.colorToJson)
   Color get color;
   @override
   double get strokeWidth;
+
+  /// Create a copy of CurveEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CurveEntityImplCopyWith<_$CurveEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

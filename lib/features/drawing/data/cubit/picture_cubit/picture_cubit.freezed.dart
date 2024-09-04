@@ -84,6 +84,9 @@ class _$PictureStateCopyWithImpl<$Res, $Val extends PictureState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -217,6 +223,8 @@ class __$$SaveFailureImplCopyWithImpl<$Res>
       _$SaveFailureImpl _value, $Res Function(_$SaveFailureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -255,7 +263,9 @@ class _$SaveFailureImpl implements _SaveFailure {
   @override
   int get hashCode => Object.hash(runtimeType, failure);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SaveFailureImplCopyWith<_$SaveFailureImpl> get copyWith =>
@@ -340,7 +350,10 @@ abstract class _SaveFailure implements PictureState {
   const factory _SaveFailure(final String failure) = _$SaveFailureImpl;
 
   String get failure;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SaveFailureImplCopyWith<_$SaveFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -362,6 +375,8 @@ class __$$SaveSuccessImplCopyWithImpl<$Res>
       _$SaveSuccessImpl _value, $Res Function(_$SaveSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -400,7 +415,9 @@ class _$SaveSuccessImpl implements _SaveSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SaveSuccessImplCopyWith<_$SaveSuccessImpl> get copyWith =>
@@ -485,7 +502,10 @@ abstract class _SaveSuccess implements PictureState {
   const factory _SaveSuccess(final int id) = _$SaveSuccessImpl;
 
   int get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SaveSuccessImplCopyWith<_$SaveSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -504,6 +524,9 @@ class __$$SaveInProgressImplCopyWithImpl<$Res>
   __$$SaveInProgressImplCopyWithImpl(
       _$SaveInProgressImpl _value, $Res Function(_$SaveInProgressImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PictureState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

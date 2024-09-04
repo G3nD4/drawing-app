@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/const/log_level.dart';
 import '../../domain/entities/picture_entity/picture_entity.dart';
-import '../../domain/repository/storage_repository.dart';
+import '../../domain/repository/picture_repository.dart';
 import '../../extensions/shared_preferences_x.dart';
 import '../../features/drawing/domain/entities/curve_entity.dart';
 import '../local_storage_keys/local_storage_keys.dart';
